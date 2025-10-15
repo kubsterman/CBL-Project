@@ -14,8 +14,8 @@ public class Game extends JFrame implements Runnable{
 
         List<Point> playerList = Arrays.asList(new Point(5,5), new Point(5,4), new Point(5,3), new Point(4,3), new Point(3,3));
 
+        Renderer panel = new Renderer("assets/maps/level1.csv", playerList);
 
-        Renderer panel = new Renderer("Resources/TileMaps/TileMaps.csv", playerList);
         frame.add(panel);
         
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
