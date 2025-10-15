@@ -12,8 +12,8 @@ public class TextureLoader {
     public static BufferedImage GetSubImage(String elementId){
         try {
             // load the xml atlas definition and sprite sheet image
-            File file = new File("Resources/Atlas/textureatlas.xml");
-            BufferedImage spriteAtlas = ImageIO.read(new File("Resources/Atlas/Texture Atlas.png"));
+            File file = new File("assets/textures/texture_atlas.xml");
+            BufferedImage spriteAtlas = ImageIO.read(new File("assets/textures/texture_atlas.png"));
            
             // parse the xml document
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
