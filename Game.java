@@ -1,3 +1,6 @@
+import java.awt.Point;
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.*;
 
 public class Game extends JFrame implements Runnable{
@@ -9,8 +12,10 @@ public class Game extends JFrame implements Runnable{
         JFrame frame = new JFrame("Game");
         frame.setSize(1280, 720);
 
+        List<Point> playerList = Arrays.asList(new Point(5,5), new Point(5,4), new Point(5,3), new Point(4,3), new Point(3,3));
 
-        TileMapRenderer panel = new TileMapRenderer("Resources/TileMaps/TileMaps.csv");
+
+        Renderer panel = new Renderer("Resources/TileMaps/TileMaps.csv", playerList);
         frame.add(panel);
         
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
