@@ -12,8 +12,12 @@ public class Game extends JFrame implements Runnable{
         JFrame frame = new JFrame("Game");
         frame.setSize(1280, 720);
 
-        List<Point> playerList = Arrays.asList(new Point(5,5), new Point(5,4), new Point(5,3), new Point(4,3), new Point(3,3));
+        AudioManager audioManager = AudioManager.getInstance("assets/audio/audio.properties");
+        audioManager.playMusic("menu");
 
+
+        List<Point> playerList = Arrays.asList(new Point(5,5), new Point(5,4), new Point(5,3), new Point(4,3), new Point(3,3));
+        
         Renderer panel = new Renderer("assets/maps/level1.csv", playerList);
 
         frame.add(panel);
