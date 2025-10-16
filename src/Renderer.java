@@ -1,4 +1,3 @@
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -19,7 +18,8 @@ public class Renderer extends JPanel {
 
     public static Renderer instance;
 
-    private boolean initialized = true;
+    private BufferedImage backgroundCache;
+    private BufferedImage collisionCache;
 
     public Renderer(String mapPath, ArrayList<Point> playerList) {
         List<List<String>> allRows = ParseCSV(mapPath);
@@ -27,6 +27,9 @@ public class Renderer extends JPanel {
 
         collisionLayer = allRows.subList(0, 10);
         backgroundLayer = allRows.subList(10, 20);
+
+        backgroundCache = renderLayerToImage(backgroundLayer);
+        collisionCache = renderLayerToImage(collisionLayer);
 
         setPreferredSize(new java.awt.Dimension((int)(160 * scale), (int)(160 * scale)));
     }
@@ -57,11 +60,12 @@ public class Renderer extends JPanel {
 
         g2d.scale(scale, scale);
 
-        drawLayer(g2d, backgroundLayer);
-        drawLayer(g2d, collisionLayer);
+        g2d.drawImage(backgroundCache, 0, 0, null);
+        g2d.drawImage(collisionCache, 0, 0, null);
 
         drawPlayer(g2d);
     }
+
     private void drawPlayer(Graphics2D g2d){
         double prevDir = 0;
         for (int i = 0; i < playerList.size()-1; i++){
@@ -111,9 +115,12 @@ public class Renderer extends JPanel {
         }
     }
     
-    double normalizeAngle(double angle){
-        angle = Math.atan2(Math.sin(angle), Math.cos(angle));
-        return angle;
+    private BufferedImage renderLayerToImage(List<List<String>> layer) {
+        BufferedImage image = new BufferedImage(160, 160, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = image.createGraphics();
+        drawLayer(g2d, layer);
+        g2d.dispose();
+        return image;
     }
 
     private BufferedImage rotateImage(BufferedImage img, double angle) {
