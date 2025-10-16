@@ -19,6 +19,8 @@ public class Renderer extends JPanel {
 
     public static Renderer instance;
 
+    private boolean initialized = true;
+
     public Renderer(String mapPath, ArrayList<Point> playerList) {
         List<List<String>> allRows = ParseCSV(mapPath);
         this.playerList = playerList;
@@ -57,22 +59,29 @@ public class Renderer extends JPanel {
 
         drawLayer(g2d, backgroundLayer);
         drawLayer(g2d, collisionLayer);
+
         drawPlayer(g2d);
     }
     private void drawPlayer(Graphics2D g2d){
         double prevDir = 0;
         for (int i = 0; i < playerList.size()-1; i++){
+            
             Point currentPoint = playerList.get(i);
             Point nextPoint = playerList.get(i+1);
             int xDiff = currentPoint.x - nextPoint.x;
             int yDiff = currentPoint.y - nextPoint.y;
             double dir = Math.atan2(yDiff, xDiff);
-            
             String spriteName = "body";
+
             if (i == 0){
                 spriteName = "head";
-            } else if (Math.abs(dir - prevDir) > 0.1 && Math.abs(dir - prevDir) < Math.PI - 0.1){
-                spriteName = "curve";
+            } else if (Math.abs(dir - prevDir) > 0 && Math.abs(dir - prevDir) <= 2*Math.PI){
+                if (dir-prevDir == -Math.PI/2 || dir-prevDir == Math.PI*1.5){
+                    spriteName = "curveOut";
+                }else if (dir-prevDir == Math.PI/2 || dir-prevDir != Math.PI*1.5){
+                    spriteName = "curveIn";
+                }
+               
             }
             
             BufferedImage sprite = TextureLoader.GetSubImage(spriteName);
@@ -80,7 +89,7 @@ public class Renderer extends JPanel {
             
             // rotate the sprite image
             BufferedImage rotatedSprite = rotateImage(sprite, dir + Math.PI/2);
-            
+            System.out.println(dir - prevDir);
             g2d.drawImage(rotatedSprite, currentPoint.x * 16, currentPoint.y * 16, 16, 16, null);
             
             prevDir = dir;
@@ -100,6 +109,11 @@ public class Renderer extends JPanel {
                 g2d.drawImage(rotatedSprite, lastPoint.x * 16, lastPoint.y * 16, 16, 16, null);
             }
         }
+    }
+    
+    double normalizeAngle(double angle){
+        angle = Math.atan2(Math.sin(angle), Math.cos(angle));
+        return angle;
     }
 
     private BufferedImage rotateImage(BufferedImage img, double angle) {
