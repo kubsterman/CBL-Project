@@ -13,14 +13,9 @@ public class Game extends JFrame implements Runnable{
         AudioManager audioManager = AudioManager.getInstance("assets/audio/audio.properties");
         audioManager.playMusic("menu");
 
-
-
         Worm worm = new Worm(); 
         
         Renderer panel = Renderer.getInstance("assets/maps/level1.csv", worm.points);
-
-
-        
 
 
         frame.add(panel);
@@ -33,18 +28,22 @@ public class Game extends JFrame implements Runnable{
                 public void keyPressed(KeyEvent e) {
                     if(e.getKeyCode() == KeyEvent.VK_W){
                         worm.moveUp();
+                        audioManager.playSFX("move");
                         panel.repaint();
                     }
                     if(e.getKeyCode() == KeyEvent.VK_A){
                         worm.moveLeft();
+                        audioManager.playSFX("move");
                         panel.repaint();
                     }
                     if(e.getKeyCode() == KeyEvent.VK_S){
                         worm.moveDown();
+                        audioManager.playSFX("move");
                         panel.repaint();
                     }
                     if(e.getKeyCode() == KeyEvent.VK_D){
                         worm.moveRight();
+                        audioManager.playSFX("move");
                         panel.repaint();
                     }
                 }
