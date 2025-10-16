@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,10 +14,12 @@ public class Renderer extends JPanel {
    
     private List<List<String>> collisionLayer;
     private List<List<String>> backgroundLayer;
-    private List<Point> playerList;
+    private ArrayList<Point> playerList;
     private double scale = 4.0;
-   
-    public Renderer(String mapPath, List<Point> playerList) {
+
+    public static Renderer instance;
+
+    public Renderer(String mapPath, ArrayList<Point> playerList) {
         List<List<String>> allRows = ParseCSV(mapPath);
         this.playerList = playerList;
 
@@ -25,7 +28,25 @@ public class Renderer extends JPanel {
 
         setPreferredSize(new java.awt.Dimension((int)(160 * scale), (int)(160 * scale)));
     }
-   
+
+    public static Renderer getInstance(String mapPath, ArrayList<Point> playerList) {
+        if (instance == null) {
+            instance = new Renderer(mapPath, playerList);
+        }
+        return instance;
+    }
+
+    public static Renderer getInstance() {
+        if (instance == null) {
+            throw new IllegalStateException("Renderer not initialized.");
+        }
+        return instance;
+    }
+
+    public void setPlayerList(ArrayList<Point> playerList){
+        this.playerList = playerList;
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

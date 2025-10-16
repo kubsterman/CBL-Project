@@ -1,8 +1,6 @@
-import java.awt.Point;
-import java.util.Arrays;
-import java.util.List;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import javax.swing.*;
-
 public class Game extends JFrame implements Runnable{
     public static void main(String[] args) {
         new Game().run();
@@ -16,14 +14,49 @@ public class Game extends JFrame implements Runnable{
         audioManager.playMusic("menu");
 
 
-        List<Point> playerList = Arrays.asList(new Point(5,5), new Point(5,4), new Point(5,3), new Point(4,3), new Point(3,3));
+
+        Worm worm = new Worm(); 
         
-        Renderer panel = new Renderer("assets/maps/level1.csv", playerList);
+        Renderer panel = Renderer.getInstance("assets/maps/level1.csv", worm.points);
+
+
+        
+
 
         frame.add(panel);
         
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+
+        frame.addKeyListener(new KeyListener(){
+             @Override
+                public void keyPressed(KeyEvent e) {
+                    if(e.getKeyCode() == KeyEvent.VK_W){
+                        worm.moveUp();
+                        panel.repaint();
+                    }
+                    if(e.getKeyCode() == KeyEvent.VK_A){
+                        worm.moveLeft();
+                        panel.repaint();
+                    }
+                    if(e.getKeyCode() == KeyEvent.VK_S){
+                        worm.moveDown();
+                        panel.repaint();
+                    }
+                    if(e.getKeyCode() == KeyEvent.VK_D){
+                        worm.moveRight();
+                        panel.repaint();
+                    }
+                }
+
+                @Override
+                public void keyTyped(KeyEvent e) {
+                }
+
+                @Override
+                public void keyReleased(KeyEvent e) {
+                }
+        });
         frame.setVisible(true);
-       
     }
 }
