@@ -1,61 +1,28 @@
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import javax.swing.*;
-public class Game extends JFrame implements Runnable{
+
+public class Game extends JFrame implements Runnable {
+    
     public static void main(String[] args) {
-        new Game().run();
+        SwingUtilities.invokeLater(() -> {
+            new Game().run();
+        });
     }
     
     public void run() {
-        JFrame frame = new JFrame("Game");
-        frame.setSize(1280, 720);
-
+        // set up the main frame
+        setTitle("Worm Game");
+        setSize(1280, 720);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        
+        // initialize audio manager
         AudioManager audioManager = AudioManager.getInstance("assets/audio/audio.properties");
         audioManager.playMusic("menu");
-
-        Worm worm = new Worm(); 
         
-        Renderer panel = Renderer.getInstance("assets/maps/level1.csv", worm.points);
-
-
-        frame.add(panel);
+        // create and show main menu
+        MainMenu mainMenu = new MainMenu(this);
+        add(mainMenu);
         
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-
-        frame.addKeyListener(new KeyListener(){
-             @Override
-                public void keyPressed(KeyEvent e) {
-                    if(e.getKeyCode() == KeyEvent.VK_W){
-                        worm.moveUp();
-                        audioManager.playSFX("move");
-                        panel.repaint();
-                    }
-                    if(e.getKeyCode() == KeyEvent.VK_A){
-                        worm.moveLeft();
-                        audioManager.playSFX("move");
-                        panel.repaint();
-                    }
-                    if(e.getKeyCode() == KeyEvent.VK_S){
-                        worm.moveDown();
-                        audioManager.playSFX("move");
-                        panel.repaint();
-                    }
-                    if(e.getKeyCode() == KeyEvent.VK_D){
-                        worm.moveRight();
-                        audioManager.playSFX("move");
-                        panel.repaint();
-                    }
-                }
-
-                @Override
-                public void keyTyped(KeyEvent e) {
-                }
-
-                @Override
-                public void keyReleased(KeyEvent e) {
-                }
-        });
-        frame.setVisible(true);
+        setVisible(true);
     }
 }
