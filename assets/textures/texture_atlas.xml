@@ -17,5 +17,8 @@
         <sprite id ="wallW" x="64" y="16" w="16" h="16"/>
         <sprite id ="wallNW" x="64" y="0" w="16" h="16"/>
 
+        <sprite id="button" x="0" y="32" w="16" h="16"/>
+        <sprite id="buttonPressed" x="16" y="32" w="16" h="16"/>
+        <sprite id="puddle" x="32" y="32" w="16" h="16"/>
     </TextureAtlas>
 </xml>
