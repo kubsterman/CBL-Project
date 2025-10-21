@@ -1,4 +1,3 @@
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -14,10 +13,15 @@ public class Renderer extends JPanel {
 
     private List<List<String>> collisionLayer;
     private List<List<String>> backgroundLayer;
+    private List<List<String>> interactableLayer;
     private ArrayList<Point> playerList;
     private double scale = 4.0;
 
     public static Renderer instance;
+
+    private BufferedImage backgroundCache;
+    private BufferedImage collisionCache;
+    private BufferedImage interactableCache;
 
     public Renderer(String mapPath, ArrayList<Point> playerList) {
         List<List<String>> allRows = ParseCSV(mapPath);
@@ -25,6 +29,18 @@ public class Renderer extends JPanel {
 
         collisionLayer = allRows.subList(0, 10);
         backgroundLayer = allRows.subList(10, 20);
+        
+        // load interactable layer
+        if (allRows.size() >= 30) {
+            interactableLayer = allRows.subList(20, 30);
+            // initialize GameManager with the interactable layer
+            GameManager.getInstance().loadInteractableLayer(interactableLayer);
+        } else {
+            interactableLayer = null;
+        }
+
+        backgroundCache = renderLayerToImage(backgroundLayer);
+        collisionCache = renderLayerToImage(collisionLayer);
 
         setPreferredSize(new java.awt.Dimension((int) (160 * scale), (int) (160 * scale)));
     }
@@ -59,8 +75,13 @@ public class Renderer extends JPanel {
 
         g2d.scale(scale, scale);
 
-        drawLayer(g2d, backgroundLayer);
-        drawLayer(g2d, collisionLayer);
+        g2d.drawImage(backgroundCache, 0, 0, null);
+        
+        // render interactable layer dynamically 
+        drawInteractableLayer(g2d);
+        
+        g2d.drawImage(collisionCache, 0, 0, null);
+
         drawPlayer(g2d);
     }
 
@@ -106,6 +127,14 @@ public class Renderer extends JPanel {
                 g2d.drawImage(rotatedSprite, lastPoint.x * 16, lastPoint.y * 16, 16, 16, null);
             }
         }
+    }
+    
+    private BufferedImage renderLayerToImage(List<List<String>> layer) {
+        BufferedImage image = new BufferedImage(160, 160, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = image.createGraphics();
+        drawLayer(g2d, layer);
+        g2d.dispose();
+        return image;
     }
 
     private BufferedImage rotateImage(BufferedImage img, double angle) {

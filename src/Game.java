@@ -6,13 +6,19 @@ import javax.swing.*;
 
 public class Game extends JFrame implements Runnable {
     public static void main(String[] args) {
-        new Game().run();
+        SwingUtilities.invokeLater(() -> {
+            new Game().run();
+        });
     }
 
     public void run() {
-        JFrame frame = new JFrame("Game");
-        frame.setSize(1280, 720);
-
+        // set up the main frame
+        setTitle("Worm Game");
+        setSize(1280, 720);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        
+        // initialize audio manager
         AudioManager audioManager = AudioManager.getInstance("assets/audio/audio.properties");
         audioManager.playMusic("menu");
 
