@@ -19,6 +19,10 @@ public class Renderer extends JPanel {
 
     public static Renderer instance;
 
+    private BufferedImage backgroundCache;
+    private BufferedImage collisionCache;
+    private BufferedImage interactableCache;
+
     public Renderer(String mapPath, ArrayList<Point> playerList) {
         List<List<String>> allRows = ParseCSV(mapPath);
         this.playerList = playerList;
@@ -26,14 +30,17 @@ public class Renderer extends JPanel {
         collisionLayer = allRows.subList(0, 10);
         backgroundLayer = allRows.subList(10, 20);
         
-        // Load interactable layer (rows 20-30)
+        // load interactable layer
         if (allRows.size() >= 30) {
             interactableLayer = allRows.subList(20, 30);
-            // Initialize GameManager with the interactable layer
+            // initialize GameManager with the interactable layer
             GameManager.getInstance().loadInteractableLayer(interactableLayer);
         } else {
             interactableLayer = null;
         }
+
+        backgroundCache = renderLayerToImage(backgroundLayer);
+        collisionCache = renderLayerToImage(collisionLayer);
 
         setPreferredSize(new java.awt.Dimension((int)(160 * scale), (int)(160 * scale)));
     }
@@ -54,8 +61,6 @@ public class Renderer extends JPanel {
 
     public void setPlayerList(ArrayList<Point> playerList){
         this.playerList = playerList;
-        // Check interactions whenever the player moves
-        GameManager.getInstance().checkWormInteractions(playerList);
     }
 
     @Override
@@ -66,9 +71,13 @@ public class Renderer extends JPanel {
 
         g2d.scale(scale, scale);
 
-        drawLayer(g2d, backgroundLayer);
+        g2d.drawImage(backgroundCache, 0, 0, null);
+        
+        // render interactable layer dynamically 
         drawInteractableLayer(g2d);
-        drawLayer(g2d, collisionLayer);
+        
+        g2d.drawImage(collisionCache, 0, 0, null);
+
         drawPlayer(g2d);
     }
     
@@ -77,24 +86,23 @@ public class Renderer extends JPanel {
         
         GameManager gameManager = GameManager.getInstance();
         
-        // Iterate through each tile in the interactable layer
+        // iterate through each tile in the interactable layer
         for(int i = 0; i < interactableLayer.size(); i++){
             for(int j = 0; j < interactableLayer.get(i).size(); j++){
                 String spriteName = interactableLayer.get(i).get(j);
                 
-                // Skip empty tiles
+                // skip empty tiles
                 if(spriteName.isEmpty() || spriteName.equals("")) continue;
                 
                 Point tilePos = new Point(j, i);
                 
-                // Check if button is pressed and use different sprite
+                // check if button is pressed and use different sprite
                 if(spriteName.equals("button")) {
                     if(gameManager.isButtonPressed(tilePos)) {
                         spriteName = "buttonPressed";
                     }
                 }
                 
-                // Load and draw the sprite at the correct position
                 BufferedImage sprite = TextureLoader.GetSubImage(spriteName);
                 if(sprite != null) {
                     g2d.drawImage(sprite, j*16, i*16, 16, 16, null);
@@ -106,17 +114,23 @@ public class Renderer extends JPanel {
     private void drawPlayer(Graphics2D g2d){
         double prevDir = 0;
         for (int i = 0; i < playerList.size()-1; i++){
+            
             Point currentPoint = playerList.get(i);
             Point nextPoint = playerList.get(i+1);
             int xDiff = currentPoint.x - nextPoint.x;
             int yDiff = currentPoint.y - nextPoint.y;
             double dir = Math.atan2(yDiff, xDiff);
-            
             String spriteName = "body";
+
             if (i == 0){
                 spriteName = "head";
-            } else if (Math.abs(dir - prevDir) > 0.1 && Math.abs(dir - prevDir) < Math.PI - 0.1){
-                spriteName = "curve";
+            } else if (Math.abs(dir - prevDir) > 0 && Math.abs(dir - prevDir) <= 2*Math.PI){
+                if (dir-prevDir == -Math.PI/2 || dir-prevDir == Math.PI*1.5){
+                    spriteName = "curveOut";
+                }else if (dir-prevDir == Math.PI/2 || dir-prevDir != Math.PI*1.5){
+                    spriteName = "curveIn";
+                }
+               
             }
             
             BufferedImage sprite = TextureLoader.GetSubImage(spriteName);
@@ -124,7 +138,6 @@ public class Renderer extends JPanel {
             
             // rotate the sprite image
             BufferedImage rotatedSprite = rotateImage(sprite, dir + Math.PI/2);
-            
             g2d.drawImage(rotatedSprite, currentPoint.x * 16, currentPoint.y * 16, 16, 16, null);
             
             prevDir = dir;
@@ -144,6 +157,14 @@ public class Renderer extends JPanel {
                 g2d.drawImage(rotatedSprite, lastPoint.x * 16, lastPoint.y * 16, 16, 16, null);
             }
         }
+    }
+    
+    private BufferedImage renderLayerToImage(List<List<String>> layer) {
+        BufferedImage image = new BufferedImage(160, 160, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = image.createGraphics();
+        drawLayer(g2d, layer);
+        g2d.dispose();
+        return image;
     }
 
     private BufferedImage rotateImage(BufferedImage img, double angle) {
