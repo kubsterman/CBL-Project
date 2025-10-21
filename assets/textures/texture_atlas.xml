@@ -3,6 +3,7 @@
     <TextureAtlas>
         <sprite id ="head" x="0" y="0" w="16" h="16"/>
         <sprite id ="body" x="0" y="16" w="16" h="16"/>
+        <sprite id ="stub" x="32" y="16" w="16" h="16"/>
         <sprite id ="curveOut" x="16" y="0" w="16" h="16"/>
         <sprite id ="curveIn" x="32" y="0" w="16" h="16"/>
         <sprite id ="tail" x="16" y="16" w="16" h="16"/>

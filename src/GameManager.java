@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameManager {
+    /** initializing variables. */
     private static GameManager instance;
     private List<List<String>> interactableLayer;
     private ArrayList<Point> pressedButtons = new ArrayList<>();
@@ -10,21 +11,22 @@ public class GameManager {
     private Point puddlePosition;
     private boolean levelComplete = false;
     private boolean puddleUnlocked = false;
-    
+    public ArrayList<Point> points;
+
     private GameManager() {
     }
-    
+
     public static GameManager getInstance() {
         if (instance == null) {
             instance = new GameManager();
         }
         return instance;
     }
-    
+
     public static void resetInstance() {
         instance = new GameManager();
     }
-    
+
     public void loadInteractableLayer(List<List<String>> layer) {
         this.interactableLayer = layer;
         this.pressedButtons.clear();
@@ -32,8 +34,8 @@ public class GameManager {
         this.puddlePosition = null;
         this.levelComplete = false;
         this.puddleUnlocked = false;
-        
-        // find all button, puddle
+
+        // find all buttons and puddle
         if (layer != null) {
             for (int i = 0; i < layer.size(); i++) {
                 for (int j = 0; j < layer.get(i).size(); j++) {
@@ -47,46 +49,56 @@ public class GameManager {
             }
         }
     }
-    
-    private void unlockPuddle() {
-        puddleUnlocked = true;
-    }
-    
-    private void triggerWinCondition() {
-        if (!levelComplete) {
-            levelComplete = true;
+
+    private void checkPuddleEnter(Point playerPosition) {
+        if (puddleUnlocked) {
+            if (puddlePosition.x == playerPosition.x && puddlePosition.y == playerPosition.y) {
+                levelComplete = true;
+            }
         }
     }
-    
-    private void onButtonPressed(Point buttonPosition) {
+
+    private void checkButtonPressed(Point playerPosition) {
+        if (buttonPositions.contains(playerPosition)) {
+            if (!isButtonPressed(playerPosition)) {
+                pressedButtons.add(playerPosition);
+            }
+
+            if (buttonPositions.size() == pressedButtons.size()) {
+                puddleUnlocked = true;
+            }
+        }
     }
-    
-    
+
+    public void onPlayerMove(Point playerPosition) {
+        checkButtonPressed(playerPosition);
+        checkPuddleEnter(playerPosition);
+    }
+
     public boolean isLevelComplete() {
         return levelComplete;
     }
-    
+
     public boolean isPuddleUnlocked() {
         return puddleUnlocked;
     }
-    
+
     public boolean isButtonPressed(Point position) {
         return pressedButtons.contains(position);
     }
-    
 
     public List<List<String>> getInteractableLayer() {
         return interactableLayer;
     }
-    
+
     public ArrayList<Point> getPressedButtons() {
         return pressedButtons;
     }
-    
+
     public ArrayList<Point> getButtonPositions() {
         return buttonPositions;
     }
-    
+
     public Point getPuddlePosition() {
         return puddlePosition;
     }
@@ -94,10 +106,9 @@ public class GameManager {
     public int getPressedButtonCount() {
         return pressedButtons.size();
     }
-    
+
     public int getTotalButtonCount() {
         return buttonPositions.size();
     }
-    
 
 }
