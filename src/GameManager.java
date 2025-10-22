@@ -12,10 +12,11 @@ public class GameManager {
     private boolean levelComplete = false;
     private boolean puddleUnlocked = false;
     public ArrayList<Point> points;
+    private AudioManager audioManager;
 
     private GameManager() {
+        audioManager = AudioManager.getInstance();
     }
-
     public static GameManager getInstance() {
         if (instance == null) {
             instance = new GameManager();
@@ -54,6 +55,7 @@ public class GameManager {
         if (puddleUnlocked) {
             if (puddlePosition.x == playerPosition.x && puddlePosition.y == playerPosition.y) {
                 levelComplete = true;
+                audioManager.playSFX("victory");
             }
         }
     }
@@ -62,6 +64,7 @@ public class GameManager {
         if (buttonPositions.contains(playerPosition)) {
             if (!isButtonPressed(playerPosition)) {
                 pressedButtons.add(playerPosition);
+                audioManager.playSFX("button");
             }
 
             if (buttonPositions.size() == pressedButtons.size()) {

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Worm {
-    int wormLength = 5;
+    int wormLength = 25;
     MapData mapData;
     GameManager gameManager;
     public ArrayList<Point> points = new ArrayList<>();

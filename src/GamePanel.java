@@ -1,8 +1,7 @@
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
+import javax.swing.*;
 
 public class GamePanel extends JPanel {
     private JFrame parentFrame;
@@ -64,6 +63,7 @@ public class GamePanel extends JPanel {
 
                 if (moved) {
                     renderer.repaint();
+                    
                 }
             }
 
@@ -76,7 +76,9 @@ public class GamePanel extends JPanel {
             }
         });
     }
-
+    private void victoryScreen(){
+        
+    }
     private void returnToMenu() {
         if (gameTimer != null) {
             gameTimer.stop();
