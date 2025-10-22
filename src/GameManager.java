@@ -12,10 +12,17 @@ public class GameManager {
     private boolean levelComplete = false;
     private boolean puddleUnlocked = false;
     public ArrayList<Point> points;
-
-    private GameManager() {
+    private AudioManager audioManager;
+    private LevelCompleteListener levelCompleteListener; 
+    
+    public interface LevelCompleteListener {
+        void onLevelComplete();
     }
 
+    private GameManager() {
+        audioManager = AudioManager.getInstance();
+    }
+    
     public static GameManager getInstance() {
         if (instance == null) {
             instance = new GameManager();
@@ -25,6 +32,10 @@ public class GameManager {
 
     public static void resetInstance() {
         instance = new GameManager();
+    }
+
+    public void setLevelCompleteListener(LevelCompleteListener listener) {
+        this.levelCompleteListener = listener;
     }
 
     public void loadInteractableLayer(List<List<String>> layer) {
@@ -54,6 +65,11 @@ public class GameManager {
         if (puddleUnlocked) {
             if (puddlePosition.x == playerPosition.x && puddlePosition.y == playerPosition.y) {
                 levelComplete = true;
+                audioManager.playMusic("victory");
+
+                if (levelCompleteListener != null) {
+                    levelCompleteListener.onLevelComplete();
+                }
             }
         }
     }
@@ -62,6 +78,7 @@ public class GameManager {
         if (buttonPositions.contains(playerPosition)) {
             if (!isButtonPressed(playerPosition)) {
                 pressedButtons.add(playerPosition);
+                audioManager.playSFX("button");
             }
 
             if (buttonPositions.size() == pressedButtons.size()) {
@@ -74,6 +91,10 @@ public class GameManager {
         checkButtonPressed(playerPosition);
         checkPuddleEnter(playerPosition);
     }
+
+    
+
+    //getters/setters
 
     public boolean isLevelComplete() {
         return levelComplete;

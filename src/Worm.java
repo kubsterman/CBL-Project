@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Worm {
-    int wormLength = 5;
+    int wormLength = 25;
     MapData mapData;
     GameManager gameManager;
     public ArrayList<Point> points = new ArrayList<>();
     ArrayList<Point> walls = new ArrayList<>();
+    private AudioManager audioManager = AudioManager.getInstance();
 
     public Worm(MapData mapData) {
         gameManager = GameManager.getInstance();
@@ -38,7 +39,7 @@ public class Worm {
 
     /** Initializes the points of the worm. */
     public void wormPoints() {
-        points.add(new Point(2, 4));
+        points.add(new Point(1, 1));
     }
 
     /** moves the worm and switches the coords over. */
@@ -60,12 +61,14 @@ public class Worm {
         for (int n = 1; n < points.size(); n++) {
             Point body = points.get(n);
             if (body.x == x.x && body.y == x.y) {
+                audioManager.playSFX("hit");
                 return true;
             }
         }
         for (int n = 0; n < walls.size(); n++) {
             Point wall = walls.get(n);
             if (wall.x == x.x && wall.y == x.y) {
+                audioManager.playSFX("hit");
                 return true;
             }
         }

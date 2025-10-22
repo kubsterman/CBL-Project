@@ -40,7 +40,7 @@ public class MainMenu extends JPanel {
         
         for (int i = 0; i < levels.length; i++) {
             final int levelIndex = i;
-            JButton levelButton = createStyledButton("Level " + (i + 1));
+            JButton levelButton = createImageButton("level" + (i+1) + "_button");
             levelButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -54,7 +54,7 @@ public class MainMenu extends JPanel {
         menuPanel.add(Box.createRigidArea(new Dimension(0, 30)));
         
         // exit button
-        JButton exitButton = createStyledButton("Exit");
+        JButton exitButton = createImageButton("quit_button");
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -66,31 +66,24 @@ public class MainMenu extends JPanel {
         add(titlePanel, BorderLayout.NORTH);
         add(menuPanel, BorderLayout.CENTER);
     }
-    
-    private JButton createStyledButton(String text) {
-        JButton button = new JButton(text);
-        button.setFont(new Font("Arial", Font.BOLD, 20));
-        button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.setMaximumSize(new Dimension(300, 50));
-        button.setPreferredSize(new Dimension(300, 50));
-        button.setFocusPainted(false);
-        button.setBackground(new Color(100, 80, 100));
-        button.setForeground(Color.WHITE);
-        button.setBorder(BorderFactory.createLineBorder(new Color(150, 130, 150), 2));
+
+    private JButton createImageButton(String buttonId) {
+        ImageIcon icon = TextureLoader.GetIcon(buttonId, 10);
+        ImageIcon hoverIcon = TextureLoader.GetIcon(buttonId + "_hover", 10);
+        ImageIcon pressedIcon = TextureLoader.GetIcon(buttonId + "_press", 10);
         
-        // hover
-        button.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                button.setBackground(new Color(130, 110, 130));
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                button.setBackground(new Color(100, 80, 100));
-            }
-        });
+        JButton button = new JButton(icon);
+        button.setRolloverIcon(hoverIcon);  // hover state
+        button.setPressedIcon(pressedIcon);  // pressed state
+        
+        button.setBorderPainted(false);
+        button.setContentAreaFilled(false);
+        button.setFocusPainted(false);
+        button.setOpaque(false);
         
         return button;
     }
-    
+        
     private void startGame(String levelPath) {
         // play game music
         AudioManager audioManager = AudioManager.getInstance();
