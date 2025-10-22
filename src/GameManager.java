@@ -55,7 +55,7 @@ public class GameManager {
         if (puddleUnlocked) {
             if (puddlePosition.x == playerPosition.x && puddlePosition.y == playerPosition.y) {
                 levelComplete = true;
-                audioManager.playSFX("victory");
+                audioManager.playMusic("victory");
             }
         }
     }
@@ -77,6 +77,10 @@ public class GameManager {
         checkButtonPressed(playerPosition);
         checkPuddleEnter(playerPosition);
     }
+
+    
+
+    //getters/setters
 
     public boolean isLevelComplete() {
         return levelComplete;

@@ -10,11 +10,19 @@ public class GamePanel extends JPanel {
     private Renderer renderer;
     private Timer gameTimer;
     private boolean gameOver = false;
+    private String levelPath;
+    private Timer restartTimer;
 
     public GamePanel(JFrame frame, String levelPath, MainMenu menu) {
         this.parentFrame = frame;
         this.mainMenu = menu;
+        this.levelPath = levelPath;
 
+        initiateGame();
+        initiateKeyListener();
+    }
+
+    private void initiateGame(){
         setLayout(new BorderLayout());
         setBackground(new Color(43, 34, 42));
 
@@ -30,7 +38,9 @@ public class GamePanel extends JPanel {
         add(infoPanel, BorderLayout.NORTH);
         add(renderer, BorderLayout.CENTER);
 
-        // set up key listener
+        
+    }
+    private void initiateKeyListener(){
         setFocusable(true);
         addKeyListener(new KeyListener() {
             @Override
@@ -60,6 +70,11 @@ public class GamePanel extends JPanel {
                     worm.moveRight();
                     moved = true;
                 }
+                if (e.getKeyCode() == KeyEvent.VK_R) {
+                    restart();
+                }
+                    
+                restartTimer.setRepeats(false);
 
                 if (moved) {
                     renderer.repaint();
@@ -76,8 +91,19 @@ public class GamePanel extends JPanel {
             }
         });
     }
-    private void victoryScreen(){
-        
+
+    private void restart(){
+        AudioManager audioManager = AudioManager.getInstance();
+        audioManager.playMusic("game");
+
+        initiateGame();
+
+        parentFrame.getContentPane().removeAll();
+        parentFrame.add(this);
+        parentFrame.revalidate();
+        parentFrame.repaint();
+        this.requestFocusInWindow();
+        restartTimer.restart();
     }
     private void returnToMenu() {
         if (gameTimer != null) {
