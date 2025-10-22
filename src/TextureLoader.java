@@ -1,12 +1,13 @@
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-
+import java.awt.Image;
 public class TextureLoader {
     
     public static BufferedImage GetSubImage(String elementId){
@@ -54,5 +55,20 @@ public class TextureLoader {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static ImageIcon GetIcon(String elementId, int scale) {
+        BufferedImage image = GetSubImage(elementId);
+        if (image == null) {
+            return null;
+        }
+        
+        Image scaledImage = image.getScaledInstance(
+            image.getWidth() * scale, 
+            image.getHeight() * scale, 
+            Image.SCALE_FAST
+        );
+        
+        return new ImageIcon(scaledImage);
     }
 }

@@ -39,11 +39,22 @@ public class Renderer extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         setBackground(new Color(43, 34, 42));
 
+        // Calculate the size of the scaled map
+        int scaledMapWidth = (int) (160 * scale);
+        int scaledMapHeight = (int) (160 * scale);
+        
+        // Calculate the offset to center the map
+        int offsetX = (getWidth() - scaledMapWidth) / 2;
+        int offsetY = (getHeight() - scaledMapHeight) / 2;
+        
+        // Translate to center position
+        g2d.translate(offsetX, offsetY);
+        
         g2d.scale(scale, scale);
 
         g2d.drawImage(backgroundCache, 0, 0, null);
 
-        // render interactable layer dynamically
+        // Render interactable layer
         drawInteractableLayer(g2d);
 
         g2d.drawImage(collisionCache, 0, 0, null);

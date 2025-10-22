@@ -39,7 +39,7 @@ public class Worm {
 
     /** Initializes the points of the worm. */
     public void wormPoints() {
-        points.add(new Point(2, 4));
+        points.add(new Point(1, 1));
     }
 
     /** moves the worm and switches the coords over. */

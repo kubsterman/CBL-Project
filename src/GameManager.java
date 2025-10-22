@@ -13,10 +13,16 @@ public class GameManager {
     private boolean puddleUnlocked = false;
     public ArrayList<Point> points;
     private AudioManager audioManager;
+    private LevelCompleteListener levelCompleteListener; 
+    
+    public interface LevelCompleteListener {
+        void onLevelComplete();
+    }
 
     private GameManager() {
         audioManager = AudioManager.getInstance();
     }
+    
     public static GameManager getInstance() {
         if (instance == null) {
             instance = new GameManager();
@@ -26,6 +32,10 @@ public class GameManager {
 
     public static void resetInstance() {
         instance = new GameManager();
+    }
+
+    public void setLevelCompleteListener(LevelCompleteListener listener) {
+        this.levelCompleteListener = listener;
     }
 
     public void loadInteractableLayer(List<List<String>> layer) {
@@ -56,6 +66,10 @@ public class GameManager {
             if (puddlePosition.x == playerPosition.x && puddlePosition.y == playerPosition.y) {
                 levelComplete = true;
                 audioManager.playMusic("victory");
+
+                if (levelCompleteListener != null) {
+                    levelCompleteListener.onLevelComplete();
+                }
             }
         }
     }

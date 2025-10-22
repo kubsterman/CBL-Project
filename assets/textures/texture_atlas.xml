@@ -1,27 +1,55 @@
 <xml version="1.0" encoding="UTF-8">
 
     <TextureAtlas>
-        <sprite id ="head" x="0" y="0" w="16" h="16"/>
-        <sprite id ="body" x="0" y="16" w="16" h="16"/>
-        <sprite id ="stub" x="32" y="16" w="16" h="16"/>
+        <sprite id ="head"     x="0" y="0" w="16" h="16"/>
+        <sprite id ="body"     x="0" y="16" w="16" h="16"/>
+        <sprite id ="stub"     x="32" y="16" w="16" h="16"/>
         <sprite id ="curveOut" x="16" y="0" w="16" h="16"/>
-        <sprite id ="curveIn" x="32" y="0" w="16" h="16"/>
-        <sprite id ="tail" x="16" y="16" w="16" h="16"/>
+        <sprite id ="curveIn"  x="32" y="0" w="16" h="16"/>
+        <sprite id ="tail"     x="16" y="16" w="16" h="16"/>
 
         <sprite id ="floor" x="80" y="16" w="16" h="16"/>
-        <sprite id ="wall" x="112" y="32" w="16" h="16"/>
+        <sprite id ="wall"  x="112" y="32" w="16" h="16"/>
 
-        <sprite id ="wallN" x="80" y="0" w="16" h="16"/>
+        <sprite id ="wallN"  x="80" y="0" w="16" h="16"/>
         <sprite id ="wallNE" x="96" y="0" w="16" h="16"/>
-        <sprite id ="wallE" x="96" y="16" w="16" h="16"/>
+        <sprite id ="wallE"  x="96" y="16" w="16" h="16"/>
         <sprite id ="wallSE" x="96" y="32" w="16" h="16"/>
-        <sprite id ="wallS" x="80" y="32" w="16" h="16"/>
+        <sprite id ="wallS"  x="80" y="32" w="16" h="16"/>
         <sprite id ="wallSW" x="64" y="32" w="16" h="16"/>
-        <sprite id ="wallW" x="64" y="16" w="16" h="16"/>
+        <sprite id ="wallW"  x="64" y="16" w="16" h="16"/>
         <sprite id ="wallNW" x="64" y="0" w="16" h="16"/>
 
-        <sprite id="button" x="0" y="32" w="16" h="16"/>
+        <sprite id="button"        x="0" y="32" w="16" h="16"/>
         <sprite id="buttonPressed" x="16" y="32" w="16" h="16"/>
-        <sprite id="puddle" x="32" y="32" w="16" h="16"/>
+        <sprite id="puddle"        x="32" y="32" w="16" h="16"/>
+
+        <sprite id="play_button"       x="0" y="48" w="32" h="16"/>
+        <sprite id="play_button_hover" x="0" y="64" w="32" h="16"/>
+        <sprite id="play_button_press" x="0" y="80" w="32" h="16"/>
+
+        <sprite id="quit_button"       x="32" y="48" w="32" h="16"/>
+        <sprite id="quit_button_hover" x="32" y="64" w="32" h="16"/>
+        <sprite id="quit_button_press" x="32" y="80" w="32" h="16"/>
+
+        <sprite id="menu_button"       x="64" y="48" w="32" h="16"/>
+        <sprite id="menu_button_hover" x="64" y="64" w="32" h="16"/>
+        <sprite id="menu_button_press" x="64" y="80" w="32" h="16"/>
+        
+        <sprite id="options_button"       x="96" y="48" w="32" h="16"/>
+        <sprite id="options_button_hover" x="96" y="64" w="32" h="16"/>
+        <sprite id="options_button_press" x="96" y="80" w="32" h="16"/>
+
+        <sprite id="level1_button"       x="128" y="48" w="32" h="16"/>
+        <sprite id="level1_button_hover" x="128" y="64" w="32" h="16"/>
+        <sprite id="level1_button_press" x="128" y="80" w="32" h="16"/>
+
+        <sprite id="level2_button"       x="160" y="48" w="32" h="16"/>
+        <sprite id="level2_button_hover" x="160" y="64" w="32" h="16"/>
+        <sprite id="level2_button_press" x="160" y="80" w="32" h="16"/>
+
+        <sprite id="level3_button"       x="192" y="48" w="32" h="16"/>
+        <sprite id="level3_button_hover" x="192" y="64" w="32" h="16"/>
+        <sprite id="level3_button_press" x="192" y="80" w="32" h="16"/>
     </TextureAtlas>
 </xml>
