@@ -1,12 +1,7 @@
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.swing.*;
 
 public class Renderer extends JPanel {
@@ -85,7 +80,11 @@ public class Renderer extends JPanel {
                         spriteName = "buttonPressed";
                     }
                 }
-
+                if (spriteName.equals("gate")) {
+                    if (gameManager.isPuddleUnlocked()) {
+                        spriteName = "gateUnlocked";
+                    }
+                }
                 BufferedImage sprite = TextureLoader.GetSubImage(spriteName);
                 if (sprite != null) {
                     g2d.drawImage(sprite, j * 16, i * 16, 16, 16, null);

@@ -145,7 +145,7 @@ public class GamePanel extends JPanel {
         final int nextLevelIndex = currentLevelIndex + 1;
         
         if (nextLevelIndex < levels.length) {
-            JButton nextLevelButton = UIManager.createImageButton("level" + nextLevelIndex + "_button", 10);
+            JButton nextLevelButton = UIManager.createImageButton("level" + (nextLevelIndex + 1) + "_button", 10);
             nextLevelButton.addActionListener(e -> loadLevel(levels[nextLevelIndex]));
             winPanel.add(nextLevelButton);
             winPanel.add(Box.createRigidArea(new Dimension(0, 15)));

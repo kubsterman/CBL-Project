@@ -1,13 +1,10 @@
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.swing.*;
 
 public class MapData {
     private List<List<String>> collisionLayer;
@@ -27,8 +24,6 @@ public class MapData {
         // load interactable layer
         if (allRows.size() >= 30) {
             interactableLayer = allRows.subList(20, 30);
-            // initialize GameManager with the interactable layer
-
         } else {
             interactableLayer = null;
         }
