@@ -2,7 +2,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import javax.swing.*;
 
-public class UIManager {
+public class GameUIManager {
         
     public static JButton createImageButton(String spriteId, int scale) {
             ImageIcon icon = TextureLoader.GetIcon(spriteId, scale);

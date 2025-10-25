@@ -1,3 +1,4 @@
+;;;;;;;
 wallNW;wallN;wallN;wallN;wallN;wallN;wallN;wallNE
 wallW;;;;;;;wallE
 wallW;;;;;;;wallE
@@ -6,9 +7,8 @@ wallW;;;;;;;wallE
 wallW;;;;;;;wallE
 wallW;;;;;;;wallE
 wallW;;;;;;;wallE
-wallW;;;;;;;wallE
 wallSW;wallS;wallS;wallS;wallS;wallS;wallS;wallSE
-floor;floor;floor;floor;floor;floor;floor;floor
+;;;;;;;
 floor;floor;floor;floor;floor;floor;floor;floor
 floor;floor;floor;floor;floor;floor;floor;floor
 floor;floor;floor;floor;floor;floor;floor;floor
@@ -20,7 +20,7 @@ floor;floor;floor;floor;floor;floor;floor;floor
 floor;floor;floor;floor;floor;floor;floor;floor
 ;;;;;;;
 ;;;;;;;
-;button;;button;button;button;button;
+;button;button;button;button;button;button;
 ;button;button;puddle;button;button;button;
 ;;;button;button;button;button;
 ;;;button;button;button;button;
