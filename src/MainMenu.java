@@ -72,9 +72,9 @@ public class MainMenu extends JPanel {
     }
 
     private JButton createImageButton(String buttonId) {
-        ImageIcon icon = TextureLoader.GetIcon(buttonId, 6);
-        ImageIcon hoverIcon = TextureLoader.GetIcon(buttonId + "_hover", 6);
-        ImageIcon pressedIcon = TextureLoader.GetIcon(buttonId + "_press", 6);
+        ImageIcon icon = TextureLoader.GetIcon(buttonId, 10);
+        ImageIcon hoverIcon = TextureLoader.GetIcon(buttonId + "_hover", 10);
+        ImageIcon pressedIcon = TextureLoader.GetIcon(buttonId + "_press", 10);
         
         JButton button = new JButton(icon);
         button.setRolloverIcon(hoverIcon);  // hover state

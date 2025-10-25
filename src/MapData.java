@@ -10,6 +10,7 @@ public class MapData {
     private List<List<String>> collisionLayer;
     private List<List<String>> backgroundLayer;
     private List<List<String>> interactableLayer;
+    private int wormLength;
 
     private BufferedImage backgroundCache;
     private BufferedImage collisionCache;
@@ -27,7 +28,17 @@ public class MapData {
         } else {
             interactableLayer = null;
         }
-
+        
+        // Set worm length based on level
+        if (mapPath.contains("level1")) {
+            wormLength = 31;
+        } else if (mapPath.contains("level2")) {
+            wormLength = 29;
+        } else if (mapPath.contains("level3")) {
+            wormLength = 35;
+        } else {
+            wormLength = 15; // default
+        }
     }
 
     public static List<List<String>> ParseCSV(String mapPath) {
@@ -52,5 +63,9 @@ public class MapData {
 
     public List<List<String>> getInteractableLayer() {
         return interactableLayer;
+    }
+    
+    public int getWormLength() {
+        return wormLength;
     }
 }

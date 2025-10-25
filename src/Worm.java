@@ -1,4 +1,3 @@
-
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +14,7 @@ public class Worm {
         gameManager = GameManager.getInstance();
 
         this.mapData = mapData;
+        this.wormLength = mapData.getWormLength();
         wormPoints();
         loadWalls();
     }
