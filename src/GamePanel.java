@@ -42,7 +42,7 @@ public class GamePanel extends JPanel {
             }
         }
 
-        worm = new Worm(mapData, levelIndex);
+        worm = new Worm(mapData);
         renderer = new Renderer(mapData, worm.points);
 
         GameManager.getInstance().setLevelCompleteListener(() -> {
@@ -146,7 +146,6 @@ public class GamePanel extends JPanel {
         for (int i = 0; i < levels.length; i++) {
             if (levels[i].equals(levelPath)) {
                 currentLevelIndex = i;
-                worm.loadLevel(i);
                 break;
             }
         }
@@ -154,7 +153,7 @@ public class GamePanel extends JPanel {
         final int nextLevelIndex = currentLevelIndex + 1;
 
         if (nextLevelIndex < levels.length) {
-            JButton nextLevelButton = GameUIManager.createImageButton("level" + nextLevelIndex
+            JButton nextLevelButton = UIManager.createImageButton("level" + nextLevelIndex
                     + "_button", 10);
             nextLevelButton.addActionListener(e -> loadLevel(levels[nextLevelIndex]));
             winPanel.add(nextLevelButton);
@@ -162,13 +161,13 @@ public class GamePanel extends JPanel {
         }
 
         // Menu button
-        JButton menuButton = GameUIManager.createImageButton("menu_button", 10);
+        JButton menuButton = UIManager.createImageButton("menu_button", 10);
         menuButton.addActionListener(e -> returnToMenu());
         winPanel.add(menuButton);
         winPanel.add(Box.createRigidArea(new Dimension(0, 15)));
 
         // Quit button
-        JButton quitButton = GameUIManager.createImageButton("quit_button", 10);
+        JButton quitButton = UIManager.createImageButton("quit_button", 10);
         quitButton.addActionListener(e -> System.exit(0));
         winPanel.add(quitButton);
 

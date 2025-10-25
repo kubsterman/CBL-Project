@@ -10,26 +10,13 @@ public class Worm {
     public ArrayList<Point> walls = new ArrayList<>();
     private AudioManager audioManager = AudioManager.getInstance();
 
-    public Worm(MapData mapData, int LevelIndex) {
+    public Worm(MapData mapData) {
         gameManager = GameManager.getInstance();
-        loadLevel(LevelIndex);
-        this.mapData = mapData;
-        loadWalls();
-    }
 
-    public void loadLevel(int i) {
-        if (i == 0) {
-            wormLength = 5;
-            wormPoints(new Point(1, 5));
-        }
-        if (i == 1) {
-            wormLength = 3;
-            wormPoints(new Point(1, 1));
-        }
-        if (i == 2) {
-            wormLength = 50;
-            wormPoints(new Point(2, 3));
-        }
+        this.mapData = mapData;
+        this.wormLength = mapData.getWormLength();
+        wormPoints();
+        loadWalls();
     }
 
     /**
@@ -59,8 +46,8 @@ public class Worm {
     }
 
     /** Initializes the points of the worm. */
-    public void wormPoints(Point x) {
-        points.add(new Point(x.x, x.y));
+    public void wormPoints() {
+        points.add(new Point(1, 1));
     }
 
     /** moves the worm and switches the coords over. */
