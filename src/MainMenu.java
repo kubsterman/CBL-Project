@@ -24,11 +24,10 @@ public class MainMenu extends JPanel {
         titleLabel.setForeground(Color.WHITE);
         titlePanel.add(titleLabel);
         
-        // menu panel
+        // menu panel with buttons
         JPanel menuPanel = new JPanel();
         menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.Y_AXIS));
         menuPanel.setBackground(new Color(43, 34, 42));
-        menuPanel.setBorder(BorderFactory.createEmptyBorder(50, 200, 50, 200));
         
         // level buttons
         JLabel selectLabel = new JLabel("Select Level:");
@@ -63,14 +62,19 @@ public class MainMenu extends JPanel {
         });
         menuPanel.add(exitButton);
         
+        // wrapper panel to center the menu
+        JPanel centerWrapper = new JPanel(new GridBagLayout());
+        centerWrapper.setBackground(new Color(43, 34, 42));
+        centerWrapper.add(menuPanel);
+        
         add(titlePanel, BorderLayout.NORTH);
-        add(menuPanel, BorderLayout.CENTER);
+        add(centerWrapper, BorderLayout.CENTER);
     }
 
     private JButton createImageButton(String buttonId) {
-        ImageIcon icon = TextureLoader.GetIcon(buttonId, 10);
-        ImageIcon hoverIcon = TextureLoader.GetIcon(buttonId + "_hover", 10);
-        ImageIcon pressedIcon = TextureLoader.GetIcon(buttonId + "_press", 10);
+        ImageIcon icon = TextureLoader.GetIcon(buttonId, 6);
+        ImageIcon hoverIcon = TextureLoader.GetIcon(buttonId + "_hover", 6);
+        ImageIcon pressedIcon = TextureLoader.GetIcon(buttonId + "_press", 6);
         
         JButton button = new JButton(icon);
         button.setRolloverIcon(hoverIcon);  // hover state
