@@ -58,6 +58,7 @@ public class GameManager {
                         puddlePosition = new Point(j, i);
                     } else if (tile.equals("gate")) {
                         gatePositions.add(new Point(j, i));
+                        System.out.println(new Point(j, i));
                     }
                 }
             }
@@ -84,7 +85,7 @@ public class GameManager {
                 audioManager.playSFX("button");
             }
 
-            if (buttonPositions.size() == pressedButtons.size() && !puddleUnlocked) {
+            if (buttonPositions.size() == pressedButtons.size()) {
                 audioManager.playSFX("unlock");
                 puddleUnlocked = true;
                 ArrayList<Point> walls = worm.walls;
@@ -92,7 +93,6 @@ public class GameManager {
                     for (int j = 0; j<gatePositions.size(); j++){
                         if (walls.get(i).x == gatePositions.get(j).x && walls.get(i).y == gatePositions.get(j).y){
                             walls.remove(i);
-                            break;
                         }
                     }
                 }
