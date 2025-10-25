@@ -24,11 +24,10 @@ public class MainMenu extends JPanel {
         titleLabel.setForeground(Color.WHITE);
         titlePanel.add(titleLabel);
         
-        // menu panel
+        // menu panel with buttons
         JPanel menuPanel = new JPanel();
         menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.Y_AXIS));
         menuPanel.setBackground(new Color(43, 34, 42));
-        menuPanel.setBorder(BorderFactory.createEmptyBorder(50, 200, 50, 200));
         
         // level buttons
         JLabel selectLabel = new JLabel("Select Level:");
@@ -63,8 +62,13 @@ public class MainMenu extends JPanel {
         });
         menuPanel.add(exitButton);
         
+        // wrapper panel to center the menu
+        JPanel centerWrapper = new JPanel(new GridBagLayout());
+        centerWrapper.setBackground(new Color(43, 34, 42));
+        centerWrapper.add(menuPanel);
+        
         add(titlePanel, BorderLayout.NORTH);
-        add(menuPanel, BorderLayout.CENTER);
+        add(centerWrapper, BorderLayout.CENTER);
     }
 
     private JButton createImageButton(String buttonId) {
