@@ -13,11 +13,11 @@ public class GamePanel extends JPanel {
     private String levelPath;
     private Timer restartTimer;
     private boolean canRestart = true;
-    private static final int RESTART_COOLDOWN = 250; 
+    private static final int RESTART_COOLDOWN = 250;
     private String[] levels = {
-        "assets/maps/level1.csv",
-        "assets/maps/level2.csv",
-        "assets/maps/level3.csv"
+            "assets/maps/level1.csv",
+            "assets/maps/level2.csv",
+            "assets/maps/level3.csv"
     };
 
     public GamePanel(JFrame frame, String levelPath, MainMenu menu) {
@@ -28,15 +28,23 @@ public class GamePanel extends JPanel {
         initiateKeyListener();
     }
 
-    private void initiateGame(){
+    private void initiateGame() {
         setLayout(new BorderLayout());
         setBackground(new Color(43, 34, 42));
-        
+
         // initialize game objects
         MapData mapData = new MapData(levelPath);
-        worm = new Worm(mapData);
+        int levelIndex = -1;
+        for (int i = 0; i < levels.length; i++) {
+            if (levels[i].equals(levelPath)) {
+                levelIndex = i;
+                break;
+            }
+        }
+
+        worm = new Worm(mapData, levelIndex);
         renderer = new Renderer(mapData, worm.points);
-        
+
         GameManager.getInstance().setLevelCompleteListener(() -> {
             SwingUtilities.invokeLater(() -> showWinScreen());
         });
@@ -46,22 +54,22 @@ public class GamePanel extends JPanel {
         infoPanel.setBackground(new Color(43, 34, 42));
         add(infoPanel, BorderLayout.NORTH);
         add(renderer, BorderLayout.CENTER);
-       
+
     }
 
-    private void initiateKeyListener(){
+    private void initiateKeyListener() {
         setFocusable(true);
         addKeyListener(new KeyListener() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if (gameOver)
+                if (gameOver) {
                     return;
-                
+                }
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     returnToMenu();
                     return;
                 }
-                
+
                 boolean moved = false;
                 if (e.getKeyCode() == KeyEvent.VK_W || e.getKeyCode() == KeyEvent.VK_UP) {
                     worm.moveUp();
@@ -83,7 +91,7 @@ public class GamePanel extends JPanel {
                     if (canRestart) {
                         canRestart = false;
                         restart();
-                        
+
                         // Start cooldown timer
                         if (restartTimer != null && restartTimer.isRunning()) {
                             restartTimer.stop();
@@ -96,7 +104,7 @@ public class GamePanel extends JPanel {
                         restartTimer.start();
                     }
                 }
-                   
+
                 if (moved) {
                     renderer.repaint();
                 }
@@ -114,17 +122,17 @@ public class GamePanel extends JPanel {
 
     public void showWinScreen() {
         gameOver = true;
-        
+
         // Remove all existing components
         removeAll();
         setLayout(new BorderLayout());
-        
+
         // Create overlay panel
         JPanel winPanel = new JPanel();
         winPanel.setLayout(new BoxLayout(winPanel, BoxLayout.Y_AXIS));
         winPanel.setBackground(new Color(43, 34, 42));
         winPanel.setBorder(BorderFactory.createEmptyBorder(100, 100, 100, 100));
-        
+
         // Title
         JLabel titleLabel = new JLabel("LEVEL COMPLETE!");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 48));
@@ -132,36 +140,38 @@ public class GamePanel extends JPanel {
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         winPanel.add(titleLabel);
         winPanel.add(Box.createRigidArea(new Dimension(0, 50)));
-        
+
         // Get current level index
         int currentLevelIndex = -1;
         for (int i = 0; i < levels.length; i++) {
             if (levels[i].equals(levelPath)) {
                 currentLevelIndex = i;
+                worm.loadLevel(i);
                 break;
             }
         }
-        
+
         final int nextLevelIndex = currentLevelIndex + 1;
-        
+
         if (nextLevelIndex < levels.length) {
-            JButton nextLevelButton = UIManager.createImageButton("level" + (nextLevelIndex + 1) + "_button", 10);
+            JButton nextLevelButton = GameUIManager.createImageButton("level" + nextLevelIndex
+                    + "_button", 10);
             nextLevelButton.addActionListener(e -> loadLevel(levels[nextLevelIndex]));
             winPanel.add(nextLevelButton);
             winPanel.add(Box.createRigidArea(new Dimension(0, 15)));
         }
-        
+
         // Menu button
-        JButton menuButton = UIManager.createImageButton("menu_button", 10);
+        JButton menuButton = GameUIManager.createImageButton("menu_button", 10);
         menuButton.addActionListener(e -> returnToMenu());
         winPanel.add(menuButton);
         winPanel.add(Box.createRigidArea(new Dimension(0, 15)));
-        
+
         // Quit button
-        JButton quitButton = UIManager.createImageButton("quit_button", 10);
+        JButton quitButton = GameUIManager.createImageButton("quit_button", 10);
         quitButton.addActionListener(e -> System.exit(0));
         winPanel.add(quitButton);
-        
+
         // Add win panel
         add(winPanel, BorderLayout.CENTER);
         revalidate();
@@ -171,11 +181,11 @@ public class GamePanel extends JPanel {
     private void loadLevel(String newLevelPath) {
         AudioManager audioManager = AudioManager.getInstance();
         audioManager.playMusic("game");
-        
+
         this.levelPath = newLevelPath;
         this.gameOver = false;
         this.canRestart = true;
-        
+
         parentFrame.getContentPane().removeAll();
         GamePanel newGamePanel = new GamePanel(parentFrame, newLevelPath, mainMenu);
         parentFrame.add(newGamePanel);
@@ -183,7 +193,8 @@ public class GamePanel extends JPanel {
         parentFrame.repaint();
         newGamePanel.requestFocusInWindow();
     }
-    private void restart(){
+
+    private void restart() {
         AudioManager audioManager = AudioManager.getInstance();
         audioManager.playMusic("game");
         initiateGame();
