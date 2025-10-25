@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Worm {
-    int wormLength = 25;
-    MapData mapData;
-    GameManager gameManager;
+    private int wormLength = 15;
+    private MapData mapData;
+    private GameManager gameManager;
     public ArrayList<Point> points = new ArrayList<>();
-    ArrayList<Point> walls = new ArrayList<>();
+    public ArrayList<Point> walls = new ArrayList<>();
     private AudioManager audioManager = AudioManager.getInstance();
 
     public Worm(MapData mapData, int LevelIndex) {
@@ -38,15 +38,23 @@ public class Worm {
      * arraylist.
      */
     public void loadWalls() {
-        List<List<String>> collisionlayer = mapData.getCollisionLayer();
+        List<List<String>> collisionLayer = mapData.getCollisionLayer();
+        List<List<String>> interactableLayer = mapData.getInteractableLayer();
 
-        for (int i = 0; i < collisionlayer.size(); i++) {
-            for (int j = 0; j < collisionlayer.get(i).size(); j++) {
-                String tile = collisionlayer.get(i).get(j);
+        for (int i = 0; i < collisionLayer.size(); i++) {
+            for (int j = 0; j < collisionLayer.get(i).size(); j++) {
+                String tile = collisionLayer.get(i).get(j);
                 if (tile.startsWith("wall")) {
                     walls.add(new Point(j, i));
                 }
-
+            }
+        }
+        for (int i = 0; i < interactableLayer.size(); i++) {
+            for (int j = 0; j < interactableLayer.get(i).size(); j++) {
+                String tile = interactableLayer.get(i).get(j);
+                if (tile.startsWith("gate")) {
+                    walls.add(new Point(j, i));
+                }
             }
         }
     }
@@ -97,7 +105,7 @@ public class Worm {
             move();
             points.set(0, newHead);
         }
-        gameManager.onPlayerMove(points.get(0));
+        gameManager.onPlayerMove(points.get(0), this);
     }
 
     /** moves the worm to the left. */
@@ -108,7 +116,7 @@ public class Worm {
             move();
             points.set(0, newHead);
         }
-        gameManager.onPlayerMove(points.get(0));
+        gameManager.onPlayerMove(points.get(0), this);
     }
 
     /** moves the worm to the right. */
@@ -119,7 +127,7 @@ public class Worm {
             move();
             points.set(0, newHead);
         }
-        gameManager.onPlayerMove(points.get(0));
+        gameManager.onPlayerMove(points.get(0), this);
     }
 
     /** moves the worm down. */
@@ -130,7 +138,7 @@ public class Worm {
             move();
             points.set(0, newHead);
         }
-        gameManager.onPlayerMove(points.get(0));
+        gameManager.onPlayerMove(points.get(0), this);
     }
 
 }

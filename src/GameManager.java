@@ -8,6 +8,7 @@ public class GameManager {
     private List<List<String>> interactableLayer;
     private ArrayList<Point> pressedButtons = new ArrayList<>();
     private ArrayList<Point> buttonPositions = new ArrayList<>();
+    private ArrayList<Point> gatePositions = new ArrayList<>();
     private Point puddlePosition;
     private boolean levelComplete = false;
     private boolean puddleUnlocked = false;
@@ -46,7 +47,7 @@ public class GameManager {
         this.levelComplete = false;
         this.puddleUnlocked = false;
 
-        // find all buttons and puddle
+        // find all buttons, gates and puddle
         if (layer != null) {
             for (int i = 0; i < layer.size(); i++) {
                 for (int j = 0; j < layer.get(i).size(); j++) {
@@ -55,6 +56,9 @@ public class GameManager {
                         buttonPositions.add(new Point(j, i));
                     } else if (tile.equals("puddle")) {
                         puddlePosition = new Point(j, i);
+                    } else if (tile.equals("gate")) {
+                        gatePositions.add(new Point(j, i));
+                        System.out.println(new Point(j, i));
                     }
                 }
             }
@@ -74,7 +78,7 @@ public class GameManager {
         }
     }
 
-    private void checkButtonPressed(Point playerPosition) {
+    private void checkButtonPressed(Point playerPosition, Worm worm) {
         if (buttonPositions.contains(playerPosition)) {
             if (!isButtonPressed(playerPosition)) {
                 pressedButtons.add(playerPosition);
@@ -82,13 +86,22 @@ public class GameManager {
             }
 
             if (buttonPositions.size() == pressedButtons.size()) {
+                audioManager.playSFX("unlock");
                 puddleUnlocked = true;
+                ArrayList<Point> walls = worm.walls;
+                for (int i = 0; i<walls.size(); i++){
+                    for (int j = 0; j<gatePositions.size(); j++){
+                        if (walls.get(i).x == gatePositions.get(j).x && walls.get(i).y == gatePositions.get(j).y){
+                            walls.remove(i);
+                        }
+                    }
+                }
             }
         }
     }
 
-    public void onPlayerMove(Point playerPosition) {
-        checkButtonPressed(playerPosition);
+    public void onPlayerMove(Point playerPosition, Worm worm) {
+        checkButtonPressed(playerPosition, worm);
         checkPuddleEnter(playerPosition);
     }
 
