@@ -2,6 +2,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+/** Creates a worm with a length and movement. */
 public class Worm {
     private int wormLength = 15;
     private MapData mapData;
@@ -10,6 +11,7 @@ public class Worm {
     public ArrayList<Point> walls = new ArrayList<>();
     private AudioManager audioManager = AudioManager.getInstance();
 
+    /** Retrieves the mapData from Gamemanager. */
     public Worm(MapData mapData) {
         gameManager = GameManager.getInstance();
 

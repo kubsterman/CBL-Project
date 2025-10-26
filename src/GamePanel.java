@@ -3,6 +3,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.*;
 
+/** initializes and draws everything within the game. */
 public class GamePanel extends JPanel {
     private JFrame parentFrame;
     private MainMenu mainMenu;
@@ -15,11 +16,12 @@ public class GamePanel extends JPanel {
     private boolean canRestart = true;
     private static final int RESTART_COOLDOWN = 250;
     private String[] levels = {
-            "assets/maps/level1.csv",
-            "assets/maps/level2.csv",
-            "assets/maps/level3.csv"
+        "assets/maps/level1.csv",
+        "assets/maps/level2.csv",
+        "assets/maps/level3.csv"
     };
 
+    /** Starts initiating everything. */
     public GamePanel(JFrame frame, String levelPath, MainMenu menu) {
         this.parentFrame = frame;
         this.mainMenu = menu;
@@ -28,6 +30,7 @@ public class GamePanel extends JPanel {
         initiateKeyListener();
     }
 
+    /** Initiates the game objects and the levels. */
     private void initiateGame() {
         setLayout(new BorderLayout());
         setBackground(new Color(43, 34, 42));
@@ -57,6 +60,7 @@ public class GamePanel extends JPanel {
 
     }
 
+    // Initiates the keyListeners and makes sure the right actions happen. 
     private void initiateKeyListener() {
         setFocusable(true);
         addKeyListener(new KeyListener() {
@@ -120,6 +124,7 @@ public class GamePanel extends JPanel {
         });
     }
 
+    /** SHows the win screen. */
     public void showWinScreen() {
         gameOver = true;
 
@@ -177,6 +182,7 @@ public class GamePanel extends JPanel {
         repaint();
     }
 
+    /** Loads the level. */
     private void loadLevel(String newLevelPath) {
         AudioManager audioManager = AudioManager.getInstance();
         audioManager.playMusic("game");
@@ -193,6 +199,7 @@ public class GamePanel extends JPanel {
         newGamePanel.requestFocusInWindow();
     }
 
+    /** Restarts the game. */
     private void restart() {
         AudioManager audioManager = AudioManager.getInstance();
         audioManager.playMusic("game");
@@ -204,6 +211,7 @@ public class GamePanel extends JPanel {
         this.requestFocusInWindow();
     }
 
+    // returns to menu
     private void returnToMenu() {
         if (gameTimer != null) {
             gameTimer.stop();

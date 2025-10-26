@@ -2,6 +2,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+/** Manages the game mechanics. */
 public class GameManager {
     /** initializing variables. */
     private static GameManager instance;
@@ -14,16 +15,19 @@ public class GameManager {
     private boolean puddleUnlocked = false;
     public ArrayList<Point> points;
     private AudioManager audioManager;
-    private LevelCompleteListener levelCompleteListener; 
-    
+    private LevelCompleteListener levelCompleteListener;
+
+    /** Looks whether level is complete. */
     public interface LevelCompleteListener {
         void onLevelComplete();
     }
 
+    /** Loads the Audiomanager. */
     private GameManager() {
         audioManager = AudioManager.getInstance();
     }
-    
+
+    /**creates an instance for gamemanager when there isn't one. */
     public static GameManager getInstance() {
         if (instance == null) {
             instance = new GameManager();
@@ -31,14 +35,17 @@ public class GameManager {
         return instance;
     }
 
+    /**Creates a new instance. */
     public static void resetInstance() {
         instance = new GameManager();
     }
 
+    /**Sets levelCompleteListener to listener. */
     public void setLevelCompleteListener(LevelCompleteListener listener) {
         this.levelCompleteListener = listener;
     }
 
+    /**Loads the interactable layer. */
     public void loadInteractableLayer(List<List<String>> layer) {
         this.interactableLayer = layer;
         this.pressedButtons.clear();
@@ -64,6 +71,7 @@ public class GameManager {
         }
     }
 
+    /**Checks whether the puddle is entered and unlocked. */
     private void checkPuddleEnter(Point playerPosition) {
         if (puddleUnlocked) {
             if (puddlePosition.x == playerPosition.x && puddlePosition.y == playerPosition.y) {
@@ -77,6 +85,7 @@ public class GameManager {
         }
     }
 
+    /** Checks whether the button is pressed and changes the animation and sound.*/
     private void checkButtonPressed(Point playerPosition, Worm worm) {
         if (buttonPositions.contains(playerPosition)) {
             if (!isButtonPressed(playerPosition)) {
@@ -87,12 +96,12 @@ public class GameManager {
                 audioManager.playSFX("unlock");
                 puddleUnlocked = true;
                 ArrayList<Point> walls = worm.walls;
-                
+
                 // Iterate backwards to avoid index issues
                 for (int i = walls.size() - 1; i >= 0; i--) {
                     for (int j = 0; j < gatePositions.size(); j++) {
-                        if (walls.get(i).x == gatePositions.get(j).x && 
-                            walls.get(i).y == gatePositions.get(j).y) {
+                        if (walls.get(i).x == gatePositions.get(j).x &&
+                                walls.get(i).y == gatePositions.get(j).y) {
                             walls.remove(i);
                             break;
                         }
@@ -102,14 +111,13 @@ public class GameManager {
         }
     }
 
+    /**On player movement activates other functions. */
     public void onPlayerMove(Point playerPosition, Worm worm) {
         checkButtonPressed(playerPosition, worm);
         checkPuddleEnter(playerPosition);
     }
 
-    
-
-    //getters/setters
+    // getters/setters
 
     public boolean isLevelComplete() {
         return levelComplete;
