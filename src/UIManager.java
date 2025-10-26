@@ -2,36 +2,38 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import javax.swing.*;
 
+/**UI manager. */
 public class UIManager {
+    /**Creates an image button. */
     public static JButton createImageButton(String spriteId, int scale) {
-            ImageIcon icon = TextureLoader.GetIcon(spriteId, scale);
+        ImageIcon icon = TextureLoader.GetIcon(spriteId, scale);
 
-            if (icon == null) {
-                return null;
-            }
+        if (icon == null) {
+            return null;
+        }
 
-            // Try to load hover icon
-            ImageIcon hoverIcon = TextureLoader.GetIcon(spriteId + "_hover", scale);
-            JButton button = new JButton(icon);
+        // Try to load hover icon
+        ImageIcon hoverIcon = TextureLoader.GetIcon(spriteId + "_hover", scale);
+        JButton button = new JButton(icon);
 
-            if (hoverIcon != null) {
-                button.setRolloverIcon(hoverIcon);
-                button.setRolloverEnabled(true);
-            }
+        if (hoverIcon != null) {
+            button.setRolloverIcon(hoverIcon);
+            button.setRolloverEnabled(true);
+        }
 
-            button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-            int scaledWidth = icon.getIconWidth();
-            int scaledHeight = icon.getIconHeight();
+        int scaledWidth = icon.getIconWidth();
+        int scaledHeight = icon.getIconHeight();
 
-            button.setMaximumSize(new Dimension(scaledWidth, scaledHeight));
-            button.setPreferredSize(new Dimension(scaledWidth, scaledHeight));
+        button.setMaximumSize(new Dimension(scaledWidth, scaledHeight));
+        button.setPreferredSize(new Dimension(scaledWidth, scaledHeight));
 
-            button.setBorderPainted(false);
-            button.setContentAreaFilled(false);
-            button.setFocusPainted(false);
-            button.setOpaque(false);
+        button.setBorderPainted(false);
+        button.setContentAreaFilled(false);
+        button.setFocusPainted(false);
+        button.setOpaque(false);
 
-            return button;
+        return button;
     }
 }
